@@ -125,11 +125,13 @@ class SoapBinding(Binding):
 
         operation_obj = self.get(operation)
 
+        processed_reply = self.process_reply(client, operation_obj, response)
+
         # If the client wants to return the raw data then let's do that.
         if client.settings.raw_response:
-            return response
+            return response, processed_reply
 
-        return self.process_reply(client, operation_obj, response)
+        return processed_reply
 
     def process_reply(self, client, operation, response):
         """Process the XML reply from the server.
